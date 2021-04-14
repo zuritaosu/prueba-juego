@@ -1,5 +1,33 @@
+namespace SpriteKind {
+    export const Player_Inmune = SpriteKind.create()
+}
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Jugador.vy = -250
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprite.setKind(SpriteKind.Player_Inmune)
+    info.changeLifeBy(-1)
+    sprite.startEffect(effects.disintegrate)
+    music.jumpDown.playUntilDone()
+    sprite.setKind(SpriteKind.Player)
+    sprite.setImage(img`
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 1 1 1 1 1 2 2 2 2 1 1 1 1 1 2 
+        2 1 1 1 1 1 2 2 2 2 1 1 1 1 1 2 
+        2 1 1 f f f 2 2 2 2 1 1 f f f 2 
+        2 1 1 f f f 2 2 2 2 1 1 f f f 2 
+        2 1 1 f f f 2 2 2 2 1 1 f f f 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 4 4 4 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 4 4 4 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 4 4 4 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+        `)
 })
 let Jugador: Sprite = null
 scene.setBackgroundImage(img`
@@ -147,3 +175,22 @@ Jugador.setPosition(32, 232)
 scene.cameraFollowSprite(Jugador)
 controller.moveSprite(Jugador, 100, 0)
 Jugador.ay = 500
+let Enemigo1 = sprites.create(img`
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 1 1 1 1 1 8 8 8 8 1 1 1 1 1 8 
+    8 1 1 1 1 1 8 8 8 8 1 1 1 1 1 8 
+    8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+    8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+    8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+    `, SpriteKind.Enemy)
+Enemigo1.setPosition(160, 232)
