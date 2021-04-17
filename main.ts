@@ -1,8 +1,47 @@
 namespace SpriteKind {
     export const Player_Inmune = SpriteKind.create()
+    export const Lava1 = SpriteKind.create()
+    export const Lava = SpriteKind.create()
+    export const Meta1 = SpriteKind.create()
+    export const Moneda = SpriteKind.create()
 }
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    projectile = sprites.createProjectileFromSprite(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . 4 4 4 4 . . . . . . 
+        . . . . 4 4 4 5 5 4 4 4 . . . . 
+        . . . 3 3 3 3 4 4 4 4 4 4 . . . 
+        . . 4 3 3 3 3 2 2 2 1 1 4 4 . . 
+        . . 3 3 3 3 3 2 2 2 1 1 5 4 . . 
+        . 4 3 3 3 3 2 2 2 2 2 5 5 4 4 . 
+        . 4 3 3 3 2 2 2 4 4 4 4 5 4 4 . 
+        . 4 4 3 3 2 2 4 4 4 4 4 4 4 4 . 
+        . 4 2 3 3 2 2 4 4 4 4 4 4 4 4 . 
+        . . 4 2 3 3 2 4 4 4 4 4 2 4 . . 
+        . . 4 2 2 3 2 2 4 4 4 2 4 4 . . 
+        . . . 4 2 2 2 2 2 2 2 2 4 . . . 
+        . . . . 4 4 2 2 2 2 4 4 . . . . 
+        . . . . . . 4 4 4 4 . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, Jugador, 150, 0)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     Jugador.vy = -250
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Lava, function (sprite, otherSprite) {
+    sprite.setPosition(32, 232)
+    info.changeLifeBy(-1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Moneda, function (sprite, otherSprite) {
+    otherSprite.destroy()
+    info.changeScoreBy(1)
+    music.baDing.play()
+})
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
+    otherSprite.destroy(effects.fire, 100)
+    sprite.destroy()
+    music.baDing.play()
+    info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     sprite.setKind(SpriteKind.Player_Inmune)
@@ -29,6 +68,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
         `)
 })
+let projectile: Sprite = null
 let Jugador: Sprite = null
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -194,3 +234,35 @@ let Enemigo1 = sprites.create(img`
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
     `, SpriteKind.Enemy)
 Enemigo1.setPosition(160, 232)
+let Lava1 = sprites.create(img`
+    2 . . . . 2 . . . . 2 . . . . 2 . . . . . 2 . . . . . 2 . . . . . 2 . . . . . . . 2 . . . . . 2 
+    `, SpriteKind.Lava)
+Lava1.setPosition(264, 241)
+let Meta_1 = sprites.create(img`
+    7 
+    `, SpriteKind.Meta1)
+Meta_1.setPosition(1592, 232)
+let Moneda_1 = sprites.create(img`
+    . . b b b . . . 
+    . b 5 5 5 b . . 
+    b 5 d 3 d 5 b . 
+    b 5 3 5 1 5 b . 
+    c 5 3 5 1 d c . 
+    c 5 d 1 d d c . 
+    . f d d d f . . 
+    . . f f f . . . 
+    `, SpriteKind.Moneda)
+Moneda_1.setPosition(119, 70)
+let Moneda_2 = sprites.create(img`
+    . . b b b . . . 
+    . b 5 5 5 b . . 
+    b 5 d 3 d 5 b . 
+    b 5 3 5 1 5 b . 
+    c 5 3 5 1 d c . 
+    c 5 d 1 d d c . 
+    . f d d d f . . 
+    . . f f f . . . 
+    `, SpriteKind.Moneda)
+Moneda_2.setPosition(1062, 168)
+info.setLife(3)
+info.setScore(0)
