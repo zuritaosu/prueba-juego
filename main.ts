@@ -4,6 +4,7 @@ namespace SpriteKind {
     export const Lava = SpriteKind.create()
     export const Meta1 = SpriteKind.create()
     export const Moneda = SpriteKind.create()
+    export const Meta2 = SpriteKind.create()
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
@@ -31,6 +32,53 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Lava, function (sprite, otherSprite) {
     sprite.setPosition(32, 232)
     info.changeLifeBy(-1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Meta1, function (sprite, otherSprite) {
+    tiles.setTilemap(tilemap`level2`)
+    Jugador.setPosition(32, 232)
+    Enemigo1.destroy()
+    Lava1.destroy()
+    Moneda_1.destroy()
+    Moneda_2.destroy()
+    Meta_1.destroy()
+    Enemigo1 = sprites.create(img`
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 1 1 1 1 1 8 8 8 8 1 1 1 1 1 8 
+        8 1 1 1 1 1 8 8 8 8 1 1 1 1 1 8 
+        8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+        8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+        8 f f f 1 1 8 8 8 8 f f f 1 1 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 4 4 4 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
+        `, SpriteKind.Enemy)
+    Enemigo1.setPosition(256, 232)
+    Meta_1 = sprites.create(img`
+        . . f b b . . . . . . . . . . . 
+        . . f d d b b . . . . . . . . . 
+        . . f 1 1 d d b b . . . . . . . 
+        . . f 1 1 1 1 d d b b b . . . . 
+        . . f 1 1 1 1 1 1 d d d b b . . 
+        . . f 1 1 1 1 1 1 1 1 1 1 d b b 
+        . . f 1 1 1 1 1 1 1 1 1 1 d b b 
+        . . f 1 1 1 1 1 d d d b b b . . 
+        . . f 1 1 d d d b b b . . . . . 
+        . . f d d b b b . . . . . . . . 
+        . . f b b . . . . . . . . . . . 
+        . . f . . . . . . . . . . . . . 
+        . . f . . . . . . . . . . . . . 
+        . . f . . . . . . . . . . . . . 
+        . . f . . . . . . . . . . . . . 
+        . . f . . . . . . . . . . . . . 
+        `, SpriteKind.Meta2)
+    Meta_1.setPosition(752, 232)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Moneda, function (sprite, otherSprite) {
     otherSprite.destroy()
@@ -69,6 +117,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         `)
 })
 let projectile: Sprite = null
+let Moneda_2: Sprite = null
+let Moneda_1: Sprite = null
+let Meta_1: Sprite = null
+let Lava1: Sprite = null
+let Enemigo1: Sprite = null
 let Jugador: Sprite = null
 scene.setBackgroundImage(img`
     9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -213,9 +266,9 @@ Jugador = sprites.create(img`
     `, SpriteKind.Player)
 Jugador.setPosition(32, 232)
 scene.cameraFollowSprite(Jugador)
-controller.moveSprite(Jugador, 100, 0)
+controller.moveSprite(Jugador, 300, 0)
 Jugador.ay = 500
-let Enemigo1 = sprites.create(img`
+Enemigo1 = sprites.create(img`
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
     8 1 1 1 1 1 8 8 8 8 1 1 1 1 1 8 
@@ -234,15 +287,30 @@ let Enemigo1 = sprites.create(img`
     8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
     `, SpriteKind.Enemy)
 Enemigo1.setPosition(160, 232)
-let Lava1 = sprites.create(img`
+Lava1 = sprites.create(img`
     2 . . . . 2 . . . . 2 . . . . 2 . . . . . 2 . . . . . 2 . . . . . 2 . . . . . . . 2 . . . . . 2 
     `, SpriteKind.Lava)
 Lava1.setPosition(264, 241)
-let Meta_1 = sprites.create(img`
-    7 
+Meta_1 = sprites.create(img`
+    . . f b b . . . . . . . . . . . 
+    . . f d d b b . . . . . . . . . 
+    . . f 1 1 d d b b . . . . . . . 
+    . . f 1 1 1 1 d d b b b . . . . 
+    . . f 1 1 1 1 1 1 d d d b b . . 
+    . . f 1 1 1 1 1 1 1 1 1 1 d b b 
+    . . f 1 1 1 1 1 1 1 1 1 1 d b b 
+    . . f 1 1 1 1 1 d d d b b b . . 
+    . . f 1 1 d d d b b b . . . . . 
+    . . f d d b b b . . . . . . . . 
+    . . f b b . . . . . . . . . . . 
+    . . f . . . . . . . . . . . . . 
+    . . f . . . . . . . . . . . . . 
+    . . f . . . . . . . . . . . . . 
+    . . f . . . . . . . . . . . . . 
+    . . f . . . . . . . . . . . . . 
     `, SpriteKind.Meta1)
-Meta_1.setPosition(1592, 232)
-let Moneda_1 = sprites.create(img`
+Meta_1.setPosition(1580, 232)
+Moneda_1 = sprites.create(img`
     . . b b b . . . 
     . b 5 5 5 b . . 
     b 5 d 3 d 5 b . 
@@ -253,7 +321,7 @@ let Moneda_1 = sprites.create(img`
     . . f f f . . . 
     `, SpriteKind.Moneda)
 Moneda_1.setPosition(119, 70)
-let Moneda_2 = sprites.create(img`
+Moneda_2 = sprites.create(img`
     . . b b b . . . 
     . b 5 5 5 b . . 
     b 5 d 3 d 5 b . 
@@ -263,6 +331,6 @@ let Moneda_2 = sprites.create(img`
     . f d d d f . . 
     . . f f f . . . 
     `, SpriteKind.Moneda)
-Moneda_2.setPosition(1062, 168)
+Moneda_2.setPosition(1058, 168)
 info.setLife(3)
 info.setScore(0)
