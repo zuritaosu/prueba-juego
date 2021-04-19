@@ -5,7 +5,14 @@ namespace SpriteKind {
     export const Meta1 = SpriteKind.create()
     export const Moneda = SpriteKind.create()
     export const Meta2 = SpriteKind.create()
+    export const Cartel1 = SpriteKind.create()
+    export const Carte_Inservible = SpriteKind.create()
+    export const Cartel2 = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Cartel1, function (sprite, otherSprite) {
+    Cartel_1.setKind(SpriteKind.Carte_Inservible)
+    game.showLongText("Colecciona las monedas para acumular puntos", DialogLayout.Bottom)
+})
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     projectile = sprites.createProjectileFromSprite(img`
         . . . . . . . . . . . . . . . . 
@@ -41,6 +48,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Meta1, function (sprite, otherSp
     Moneda_1.destroy()
     Moneda_2.destroy()
     Meta_1.destroy()
+    Cartel_1.destroy()
+    Cartel_2.destroy()
     Enemigo1 = sprites.create(img`
         8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
         8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 
@@ -85,6 +94,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Moneda, function (sprite, otherS
     info.changeScoreBy(1)
     music.baDing.play()
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Cartel2, function (sprite, otherSprite) {
+    Cartel_2.setKind(SpriteKind.Carte_Inservible)
+    game.showLongText("Ten cuidado que puede haber monedas ocultas", DialogLayout.Bottom)
+})
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     otherSprite.destroy(effects.fire, 100)
     sprite.destroy()
@@ -117,6 +130,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         `)
 })
 let projectile: Sprite = null
+let Cartel_2: Sprite = null
+let Cartel_1: Sprite = null
 let Moneda_2: Sprite = null
 let Moneda_1: Sprite = null
 let Meta_1: Sprite = null
@@ -332,5 +347,44 @@ Moneda_2 = sprites.create(img`
     . . f f f . . . 
     `, SpriteKind.Moneda)
 Moneda_2.setPosition(1058, 168)
+Cartel_1 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    e e e e e e e e e e e e e e e e 
+    e f f e f f e f e f f f e f f e 
+    e e e e e e e e e e e e e e e e 
+    e e e f e f f e f f e f e f e e 
+    e e e e e e e e e e e e e e e e 
+    e f e f f e f e f f f e f e f e 
+    e e e e e e e e e e e e e e e e 
+    e e e e e e e e e e e e e e e e 
+    e e e e e e e e e e e e e e e e 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    `, SpriteKind.Cartel1)
+Cartel_1.setPosition(550, 232)
+Cartel_2 = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    e e e e e e e e e e e e e e e e 
+    e f f e f f e f e f f f e f f e 
+    e e e e e e e e e e e e e e e e 
+    e e e f e f f e f f e f e f e e 
+    e e e e e e e e e e e e e e e e 
+    e f e f f e f e f f f e f e f e 
+    e e e e e e e e e e e e e e e e 
+    e e e e e e e e e e e e e e e e 
+    e e e e e e e e e e e e e e e e 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    . . . . . . . e e . . . . . . . 
+    `, SpriteKind.Cartel2)
+Cartel_2.setPosition(1050, 232)
 info.setLife(3)
 info.setScore(0)
+game.showLongText("Utiliza los cursores para moverte, usa el botón A para saltar y el B para disparar ", DialogLayout.Bottom)
